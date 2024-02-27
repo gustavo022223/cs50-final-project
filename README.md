@@ -1,5 +1,5 @@
 # PATIENT MANAGER
-#### Video Demo:  <URL HERE>
+#### Video Demo:  https://youtu.be/4teIi1vi9lw
 #### Description:
 This web app provides management and monitoring of hospitalized patients, maintaining records of information about the patients and their stay. It allows hospital staff simple and quick access to the patient's profile, including their personal and contact information, allergies, restrictions, medications, condition, severity level, and admission dates. It also enables employees, according to their roles, to edit information, register a new admission, and discharge patients. Additionally, administrators can manage employee accounts and review requests for new account registration. It was created using the Flask framework, SQLite3 for database management, and HTML, CSS, and JavaScript for the user interface.
 

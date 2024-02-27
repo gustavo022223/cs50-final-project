@@ -1,0 +1,120 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Edit patient profile
+{% endblock %}
+
+{% block main %}
+
+{% if can_edit %}
+<div class="mb-3">
+    <h2 class="previous-date">Edit patient profile</h2>
+</div>
+
+<form action="/edit-patient/{{ patient.id }}" method="post">
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <th class="text-start">ID</th>
+                <td class="text-start">{{ patient.id }}</td>
+            </tr>
+            <tr>
+                <th class="text-start"><label for="fullname">Full Name</label></th>
+                <td class="text-start"><input class="form-control w-auto" type="text" id="fullname" name="fullname" placeholder="{{ patient.fullname }}" value="{{ patient.fullname }}"></td>
+            </tr>
+            <tr>
+                <th class="text-start">Age</th>
+                <td class="text-start">{{ age }}</td>
+            </tr>
+            <tr>
+                <th class="text-start"><label for="gender">Gender</label></th>
+                <td class="text-start">
+                    <select class="form-select w-auto" id="gender" name="gender">
+                        <option value="Male" {% if patient.gender == 'Male' %}selected{% endif %}>Male</option>
+                        <option value="Female" {% if patient.gender == 'Female' %}selected{% endif %}>Female</option>
+                        <option value="Other" {% if patient.gender == 'Other' %}selected{% endif %}>Other</option>
+                        <option value="Non-Binary" {% if patient.gender == 'Non-Binary' %}selected{% endif %}>Non-Binary</option>
+                        <option value="Prefer Not to Say" {% if patient.gender == 'Prefer Not to Say' %}selected{% endif %}>Prefer Not to Say</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th class="text-start"><label for="birth-date">Birth date</label></th>
+                <td class="text-start"><input class="form-control w-auto" type="date" id="birth-date" name="birth-date" placeholder="{{ patient.birth_date }}" value="{{ patient.birth_date }}"></input></td>
+            </tr>
+            <tr>
+                <th class="text-start"><label for="address">Address</label></th>
+                <td class="text-start"><input class="form-control w-auto" type="text" id="address" name="address" placeholder="{{ patient.address }}" value="{{ patient.address }}"></td>
+            </tr>
+            <tr>
+                <th class="text-start"><label for="phone-numbers">Phone number</label></th>
+                <td class="text-start"><input class="form-control w-auto" type="text" id="phone-numbers" name="phone-numbers" placeholder="{{ patient.phone_numbers }}" value="{{ patient.phone_numbers }}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <th class="text-start"><label for="allergies">Allergies</label></th>
+                <td class="text-start"><input class="form-control w-auto" type="text" id="allergies" name="allergies" placeholder="{{ medical_history.allergies }}" value="{{ medical_history.allergies }}"></input></td>
+            </tr>
+            <tr>
+                <th class="text-start"><label for="restrictions">Restrictions</label></th>
+                <td class="text-start"><input class="form-control w-auto" type="text" id="restrictions" name="restrictions" placeholder="{{ medical_history.restrictions }}" value="{{ medical_history.restrictions }}"></input></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <th class="text-start">Stay ID</th>
+                <td class="text-start">{{ stay.stay_id }}</td>
+                <input type="hidden" name="stay-id" value="{{ stay.stay_id }}">
+            </tr>
+            <tr>
+                <th class="text-start"><label for="current-condition">Condition</label></th>
+                <td class="text-start"><input class="form-control w-auto" type="text" id="current-condition" name="current-condition" placeholder="{{ stay.current_condition }}" value="{{ stay.current_condition }}"></input></td>
+            </tr>
+            <tr>
+                <th class="text-start"><label for="diagnosis-date">Diagnosis date</label></th>
+                <td class="text-start"><input class="form-control w-auto" type="date" id="diagnosis-date" name="diagnosis-date" placeholder="{{ stay.diagnosis_date }}" value="{{ stay.diagnosis_date }}"></input></td>
+            </tr>
+            <tr>
+                <th class="text-start"><label for="condition-severity">Condition severity</label></th>
+                <td class="text-start">
+                    <select class="form-select w-auto" name="condition-severity" id="condition-severity">
+                        <option value="Mild" {% if stay.condition_severity == 'Mild' %}selected{% endif %}>Mild</option>
+                        <option value="Moderate" {% if stay.condition_severity == 'Moderate' %}selected{% endif %}>Moderate</option>
+                        <option value="Severe" {% if stay.condition_severity == 'Severe' %}selected{% endif %}>Severe</option>
+                        <option value="Critical" {% if stay.condition_severity == 'Critical' %}selected{% endif %}>Critical</option>
+                        <option value="None" {% if stay.condition_severity is none %}selected{% endif %}>None</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th class="text-start"><label for="medication">Medication</label></th>
+                <td class="text-start"><input class="form-control w-auto" type="text" id="medication" name="medication" placeholder="{{ stay.medication }}" value="{{ stay.medication }}"></input></td>
+            </tr>
+            <tr>
+                <th class="text-start">Admission date</th>
+                <td class="text-start">{{ stay.admission_date | format_date_and_time }}</td>
+            </tr>
+            <tr>
+                <th class="text-start"><label for="projected-discharge-date">Projected discharge date</label></th>
+                <td class="text-start"><input class="form-control w-auto" type="date" id="projected-discharge-date" name="projected-discharge-date" placeholder="{{ stay.projected_discharge_date }}" value="{{ stay.projected_discharge_date }}"></input></td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="/patient/{{ patient.id }}" class="btn btn-secondary">Cancel</a>
+    <button class="btn btn-primary" type="submit">Save changes</button>
+</form>
+
+{% else %}
+
+<h2 class="previous-date">You don't have permission to edit patient information.</h2>
+
+{% endif %}
+
+{% endblock %}

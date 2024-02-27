@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    All patients
+{% endblock %}
+
+{% block main %}
+
+<h1 class="previous-date">All patients</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th class="text-start">ID</th>
+            <th class="text-start">Name</th>
+        </tr>
+    </thead>
+    <tbody>
+            {% for patient in patients %}
+            <tr>
+                <td class="text-start"><a href="/patient/{{ patient.id }}">{{ patient.id }}</a></td>
+                <td class="text-start"><a href="/patient/{{ patient.id }}">{{ patient.fullname }}</a></td>
+            </tr>
+            {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

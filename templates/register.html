@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <div class="form">
+        <h3>Create an account</h3>
+        <form action="/register" method="post">
+            <div class="mb-3">
+                <label for="fullname" class="visually-hidden">Full name</label>
+                <input autocomplete="off" autofocus class="form-control mx-auto w-75" id="fullname" name="fullname" placeholder="Full name" type="text" required>
+            </div>
+            <div class="mb-3">
+                <label for="username" class="visually-hidden">Username</label>
+                <input autocomplete="off" class="form-control mx-auto w-75" id="username" name="username" placeholder="Username" type="text" required>
+            </div>
+            <div class="mb-3">
+                <label for="job-title" class="visually-hidden">Select your job position</label>
+                <select class="form-select mx-auto w-75" name="job-title">
+                    <option disabled selected>Select your job position</option>
+                    {% for job in titles %}
+                    <option value="{{ job.title }}">{{ job.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="visually-hidden">Password</label>
+                <input class="form-control mx-auto w-75" id="password" name="password" placeholder="Password" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                <p class="mx-auto w-75" id="password-requirements">Must contain at least one digit, one uppercase and one lowercase letter, and be at least 8 characters long.</p>
+            </div>
+            <div class="mb-3">
+                <label for="confirmation" class="visually-hidden">Confirm password</label>
+                <input class="form-control mx-auto w-75" id="confirmation" name="confirmation" placeholder="Confirm password" type="password" required>
+            </div>
+            <label for="register" class="visually-hidden">Click to register account</label>
+            <button id="register" class="btn btn-primary w-75" type="submit">Register</button>
+        </form>
+        <hr>
+        <p>Already have an account? <a href="/login">Log in</a></p>
+    </div>
+
+    <script>
+        const passwordInput = document.getElementById('password');
+        const passwordHelp = document.getElementById('password-requirements');
+    
+        passwordInput.addEventListener('input', function() {
+          if (!this.validity.valid) {
+            passwordHelp.style.display = 'block';
+          } else {
+            passwordHelp.style.display = 'none';
+          }
+        });
+    </script>
+{% endblock %}

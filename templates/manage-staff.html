@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Manage staff
+{% endblock %}
+
+{% block main %}
+
+    {% if session["job_title"] != 'Administrator'%}
+        <h2 class="previous-date">You don't have permission to access this page.</h2>
+    {% else %}
+        <h1 class="previous-date">Manage staff</h1>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-start">ID</th>
+                    <th class="text-start">Name</th>
+                    <th class="text-start">Job title</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in staff %}
+                    <tr>
+                        <td class="text-start">{{ member.id }}</td>
+                        <td class="text-start"><a href="/user/{{ member.id }}">{{ member.full_name }}</a></td>
+                        <td class="text-start">{{ member.job_title }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    
+{% endblock %}

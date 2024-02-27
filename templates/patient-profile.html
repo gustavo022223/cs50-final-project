@@ -1,0 +1,223 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Patient profile
+{% endblock %}
+
+{% block main %}
+
+<section class="info-section">
+    <div class="info-header">
+        <div class="info-avatar"></div>
+        <div class="info">
+            <div class="info-title">
+                <p class="info-label">Full name:</p>
+                <h1 class="info-value">{{ patient.fullname }}</h1>
+            </div>
+            <div class="info-row">
+                <div class="info-item">
+                    <p class="info-label">Patient ID:</p>
+                    <p class="info-value">{{ patient.id }}</p>
+                </div>
+                <div class="info-item">
+                    <p class="info-label">Gender:</p>
+                    <p class="info-value">{{ patient.gender }}</p>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-item">
+                    <p class="info-label">Age:</p>
+                    <p class="info-value">{{ age }} years</p>
+                </div>
+                <div class="info-item">
+                    <p class="info-label">Birth date:</p>
+                    <p class="info-value">{{ patient.birth_date | format_date_and_time }}</p>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-item">
+                    <p class="info-label">Allergies:</p>
+                    <p class="info-value">{{ medical_history.allergies }}</p>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-item">
+                    <p class="info-label">Restrictions:</p>
+                    <p class="info-value">{{ medical_history.restrictions }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if can_edit %}
+    <div class="buttons-row">
+        <a href="/edit-patient/{{ patient.id }}" class="mb-3 btn btn-primary">Edit patient information</a>
+    
+        {% if stay.discharge_date == "Unavailable" %}
+            <div class="mb-3">
+                <form action="/discharge-patient/{{ patient.id }}" method="get">
+                    <button class="mb-3 btn btn-success" type="submit">Discharge patient</button>
+                </form>
+            </div>
+        {% endif %} 
+       
+
+        {% if stay.discharge_date != "Unavailable" %}
+            <div class="mb-3">
+                <form action="/new-stay/{{ patient.id }}" method="get">
+                    <button class="mb-3 btn btn-primary" type="submit">New stay</button>
+                </form>
+            </div>
+        {% endif %}
+        
+    </div>
+    <div class="dynamic-content-row">
+        {% block dynamic_content_discharge_patient %}{% endblock %}
+        {% block dynamic_content_new_stay %}{% endblock %}
+    </div>
+    {% endif %}
+
+    {% if stay.discharge_date == "Unavailable"%}
+    <div class="info-details">
+        <h4 class="previous-date">Stay details</h4>
+        <div class="info">
+            <div class="stay-row">
+                <div class="stay-item">
+                    <p class="stay-label">Stay ID:</p>
+                    <p class="stay-value">{{ stay.stay_id }}</p>
+                </div>
+                <div class="stay-item">
+                    <p class="stay-label">Condition:</p>
+                    <p class="stay-value">{{ stay.current_condition }}</p>
+                </div>
+                <div class="stay-item">
+                    <p class="stay-label">Diagnosis date:</p>
+                    <p class="stay-value">{{ stay.diagnosis_date | format_date_and_time }}</p>
+                </div>
+                <div class="stay-item">
+                    <p class="stay-label">Condition severity:</p>
+                    <p class="stay-value">{{ stay.condition_severity }}</p>
+                </div>
+            </div>
+            <div class="stay-row">  
+                <div class="stay-item">
+                    <p class="stay-label">Medication</p>
+                    <p class="stay-value">{{ stay.medication }}</p>
+                </div>
+                <div class="stay-item">
+                    <p class="stay-label">Admission date and time:</p>
+                    <p class="stay-value">{{ stay.admission_date | format_date_and_time }}</p>
+                </div>
+                <div class="stay-item">
+                    <p class="stay-label">Projected discharge date:</p>
+                    <p class="stay-value">{{ stay.projected_discharge_date | format_date_and_time }}</p>
+                </div>
+                <div class="stay-item">
+                    <p class="stay-label">Discharge date and time:</p>
+                    <p class="stay-value">{{ stay.discharge_date | format_date_and_time }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</section>
+
+<section class="history-section">
+    <div class="profile-tabs">
+        <button class="tab-btn active" onclick="openTab('personal')">Contact Info</button>
+        <button class="tab-btn" onclick="openTab('medical')">Medical History</button>
+    </div>
+    
+      <div id="personal" class="profile-tab-content">
+        <h3 class="previous-date">Contact details</h3>
+            <div class="info-details">
+                <div class="info">
+                    <div class="stay-row">
+                        <div class="stay-item">
+                            <p class="stay-label">Address:</p>
+                            <p class="stay-value">{{ patient.address }}</p>
+                        </div>
+                        <div class="stay-item">
+                            <p class="stay-label">Phone number:</p>
+                            <p class="stay-value">{{ patient.phone_numbers }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      </div>
+    
+      <div id="medical" class="profile-tab-content" style="display: none;">
+        
+        {% if not previous_stays %}
+        <h3 class="previous-date">No medical history available</h3>
+        {% endif %}
+
+        {% if previous_stays %}
+        <h3 class="previous-date">Previous stays</h3>
+        {% endif %}
+        <div class="previous-details">
+            
+            {% for info in previous_stays %}
+            <div class="previous-info">
+                <p class="previous-date">From <strong>{{ info.admission_date | format_date_and_time }}</strong> to <strong>{{ info.discharge_date | format_date_and_time }}</strong></p>
+                <div class="stay-row">
+                    <div class="stay-item">
+                        <p class="stay-label">Stay ID:</p>
+                        <p class="stay-value">{{ info.stay_id }}</p>
+                    </div>
+                    <div class="stay-item">
+                        <p class="stay-label">Condition:</p>
+                        <p class="stay-value">{{ info.current_condition }}</p>
+                    </div>
+                    <div class="stay-item">
+                        <p class="stay-label">Diagnosis date:</p>
+                        <p class="stay-value">{{ info.diagnosis_date | format_date_and_time }}</p>
+                    </div>
+                    <div class="stay-item">
+                        <p class="stay-label">Condition severity:</p>
+                        <p class="stay-value">{{ info.condition_severity }}</p>
+                    </div>
+                </div>
+                <div class="stay-row">  
+                    <div class="stay-item">
+                        <p class="stay-label">Medication</p>
+                        <p class="stay-value">{{ info.medication }}</p>
+                    </div>
+                    <div class="stay-item">
+                        <p class="stay-label">Admission date and time:</p>
+                        <p class="stay-value">{{ info.admission_date | format_date_and_time }}</p>
+                    </div>
+                    <div class="stay-item">
+                        <p class="stay-label">Projected discharge date:</p>
+                        <p class="stay-value">{{ info.projected_discharge_date | format_date_and_time }}</p>
+                    </div>
+                    <div class="stay-item">
+                        <p class="stay-label">Discharge date and time:</p>
+                        <p class="stay-value">{{ info.discharge_date | format_date_and_time }}</p>
+                    </div>
+                </div>
+            </div>  
+            {% endfor %}
+        </div>
+      </div>
+    <script>
+        function openTab(tabName) {
+            const tabs = document.querySelectorAll('.profile-tab-content');
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            
+            tabs.forEach(tab => {
+                tab.style.display = 'none';
+            });
+            
+            tabBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('onclick') === `openTab('${tabName}')`) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            document.getElementById(tabName).style.display = 'block';
+        }
+    </script>   
+</section>
+
+{% endblock %}

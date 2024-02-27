@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Confirm deletion
+{% endblock %}
+
+{% block main %}
+    {% if session["job_title"] == 'Administrator' %}
+        <div class="form">
+            <h3 class="border-radius-title">Confirm deletion</h3>
+            <form action="/manage-staff" method="post">
+                <input type="hidden" name="user-id" value="{{ staff_member_id }}">
+                <div class="mb-3">
+                    <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="password" name="password" placeholder="Insert your password" type="password" required>
+                </div>
+                <div class="mb-3">
+                    <a href="/user/{{ staff_member_id }}" class="btn btn-secondary">Cancel</a>
+                    <button class="btn btn-primary" type="submit" name="action" value="confirm-deletion">Proceed and delete</button>
+                </div>
+            </form>
+        </div>
+    {% else %}
+        <h2 class="previous-date">You don't have permission to access this page.</h2>
+    {% endif %}
+{% endblock %}

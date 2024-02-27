@@ -1,0 +1,24 @@
+{% extends "patient-profile.html" %}
+
+{% block title %}
+    Discharge patient
+{% endblock %}
+
+{% block dynamic_content_discharge_patient %}
+ 
+<form action="/discharge-patient/{{ patient.id }}" method="post">
+    <input type="hidden" name="stay-id" value="{{ stay.stay_id }}">
+    <label class="mb-3" for="discharge-date">Discharge date and time:</label>
+    <input class="mb-3 form-control mx-auto w-auto" type="datetime-local" name="discharge-date" id="discharge-date" placeholder="Discharge date" value="">
+    
+    <script>
+        const currentDateTime = new Date().toISOString().slice(0, 16);
+        document.getElementById('discharge-date').value = currentDateTime;
+    </script>
+
+    <div class="mb-3">
+        <a href="/patient/{{ patient.id }}" class="btn btn-secondary">Cancel</a>
+        <button class="btn btn-primary" type="submit">Proceed</button>
+    </div>
+</form>
+{% endblock %}

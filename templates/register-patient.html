@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register patient
+{% endblock %}
+
+{% block main %}
+    <div class="form">
+        <h3 class="border-radius-title">Register patient</h3>
+        <form action="/register-patient" method="post">
+            <div class="mb-3">
+                <label for="fullname">Full name:</label>
+                <input autocomplete="off" autofocus class="form-control mx-auto w-75" id="fullname" name="fullname" placeholder="Full name" type="text" required>
+            </div>
+            <div class="mb-3">
+                <label for="gender">Gender:</label>
+                <select class="form-select mx-auto w-75" name="gender">
+                    <option disabled selected>Select</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Non-Binary">Non-Binary</option>
+                    <option value="Prefer Not to Say">Prefer Not to Say</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="birth-date">Birth date:</label>
+                <input autocomplete="off" class="form-control mx-auto w-75" id="birth-date" name="birth-date" placeholder="Birth date (YYYY-MM-DD)" type="date" required>
+            </div>
+            <div class="mb-3">
+                <label for="admission-date">Admission date and time:</label>
+                <input autocomplete="off" class="form-control mx-auto w-75" id="admission-date" name="admission-date" placeholder="Admission date" type="datetime-local" required value="">
+            </div>
+            <script>
+                const currentDateTime = new Date().toISOString().slice(0, 16);
+                document.getElementById('admission-date').value = currentDateTime;
+            </script>
+            <button class="btn btn-primary" type="submit">Register</button>
+        </form>
+    </div>
+{% endblock %}

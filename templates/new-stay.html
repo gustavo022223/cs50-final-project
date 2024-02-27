@@ -1,0 +1,24 @@
+{% extends "patient-profile.html" %}
+
+{% block title %}
+    New stay
+{% endblock %}
+
+{% block dynamic_content_new_stay %}
+
+<form action="/new-stay/{{ patient.id }}" method="post">
+    <label class="mb-3" for="discharge-date">Admission date and time:</label>
+    <input class="mb-3 form-control mx-auto w-auto" type="datetime-local" name="admission-date" id="admission-date" placeholder="Admission date" value="">
+    
+    <script>
+        const currentDateTime = new Date().toISOString().slice(0, 16);
+        document.getElementById('admission-date').value = currentDateTime;
+    </script>
+
+    <div class="mb-3">
+        <a href="/patient/{{ patient.id }}" class="btn btn-secondary">Cancel</a>
+        <button class="btn btn-primary" type="submit">Proceed</button>
+    </div>
+</form>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Profile settings
+{% endblock %}
+
+{% block main %}
+
+<div class="form">
+    <h2 class="border-radius-title">Account settings</h2>
+    <form  id="account-settings" action="/account-settings" method="post">
+        <div class="mb-3 row">
+            <label for="username" class="col-sm-4 col-form-label">Username:</label>
+            <div class="col-sm-7">
+                <input autocomplete="off" class="form-control" id="username" name="username" placeholder="{{ user_info.username }}" value="{{ user_info.username }}" type="text" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="full-name" class="col-sm-4 col-form-label">Full name:</label>
+            <div class="col-sm-7">
+                <input autocomplete="off" autofocus class="form-control" id="full-name" name="full-name" placeholder="{{ user_info.full_name }}" value="{{ user_info.full_name }}" type="text" required>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="job-title" class="col-sm-4 col-form-label">Job position:</label>
+            <div class="col-sm-7">
+                <select class="form-select" name="job-title">
+                    {% for job in titles %}
+                    <option value="{{ job.title }}" {% if user_info.job_title == job.title %}selected{% endif %}>{{ job.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <a href="/your-profile" class="btn btn-secondary">Cancel</a>
+
+        <label for="submit" class="visually-hidden">Click to save changes</label>
+        <button class="btn btn-primary" type="submit">Save changes</button>
+    </form>
+    <hr>
+    <div class="mb-3">
+        <a href="/change-password" class="btn btn-primary">Change password</a>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Control panel
+{% endblock %}
+
+{% block main %}
+    {% if session["job_title"] != 'Administrator'%}
+        <h2 class="previous-date">You don't have permission to access this page.</h2>
+    {% else %}
+    <h1 class="previous-date">Control panel</h1>
+
+    <div class="control-items">
+        <a class="control-item" href="/registration-requests">Registration requests</a>
+        
+        <a class="control-item" href="/manage-staff">Manage staff</a>
+    </div>
+    {% endif %}
+{% endblock %}

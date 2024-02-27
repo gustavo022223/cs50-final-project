@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ user_info.full_name }} profile
+{% endblock %}
+
+{% block main %}
+
+<section class="info-section">
+    <div class="info-header">
+        <div class="{% if user_info.job_title == 'Administrator' %} admin-avatar {% else %} staff-avatar {% endif %}"></div>
+        <div class="info">
+            <div class="info-title">
+                <p class="info-label">Full name:</p>
+                <h1 class="info-value">{{ user_info.full_name }}</h1>
+            </div>
+            <div class="info-row">
+                <div class="info-item">
+                    <p class="info-label">User ID:</p>
+                    <p class="info-value">{{ user_info.id }}</p>
+                </div>
+                <div class="info-item">
+                    <p class="info-label">Username:</p>
+                    <p class="info-value">{{ user_info.username }}</p>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-item">
+                    <p class="info-label">Position:</p>
+                    <p class="info-value">{{ user_info.job_title }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if session["job_title"] == 'Administrator' and showButton == True %}
+        <div class="dynamic-content-row">
+            <div class="buttons-row">
+                <form id="delete-form" action="/manage-staff" method="post">
+                    <input type="hidden" name="user-id" value="{{ user_info.id }}">
+                    {% if user_info.id == session["user_id"] %}
+                        <button class="btn btn-danger" type="submit" id="delete" name="action" value="delete-own">Delete your profile</button>
+                    {% else %}
+                        <button class="btn btn-danger" type="submit" id="delete" name="action" value="delete">Delete member profile</button>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+
+        <script>
+            // Add event listener to the delete button
+            document.getElementById("delete").addEventListener("click", function(event) {
+                // Display confirmation dialog
+                {% if user_info.id == session["user_id"] %}
+                    var confirmation = confirm("Are you sure you want to delete your profile?");
+                {% else %}
+                    var confirmation = confirm("Are you sure you want to delete this member profile?");
+                {% endif %}
+                // If user confirms deletion, proceed with form submission
+                if (!confirmation) {
+                    event.preventDefault(); // Prevent form submission
+                }
+            });
+        </script>
+    {% endif %}
+</section>
+
+{% endblock %}
